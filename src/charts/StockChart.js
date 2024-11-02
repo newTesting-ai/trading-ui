@@ -1,6 +1,38 @@
 import React, {useEffect, useState} from 'react';
 import Plot from 'react-plotly.js';
 
+// Helper function to calculate Simple Moving Average (SMA)
+const calculateSMA = (data, window) => {
+  const sma = [];
+  for (let i = 0; i < data.length; i++) {
+    if (i < window - 1) {
+      sma.push(null); // No SMA value until the window size is reached
+    } else {
+      const sum = data.slice(i - window + 1, i + 1).reduce((a, b) => a + b, 0);
+      sma.push(sum / window);
+    }
+  }
+  return sma;
+};
+
+// Helper function to calculate Exponential Moving Average (EMA)
+const calculateEMA = (data, window) => {
+  const ema = [];
+  const k = 2 / (window + 1); // Smoothing factor
+  let previousEma = data[0]; // Start with the first price
+
+  for (let i = 0; i < data.length; i++) {
+    if (i === 0) {
+      ema.push(data[0]); // The first value is the first price
+      continue;
+    }
+    const currentEma = (data[i] - previousEma) * k + previousEma;
+    ema.push(currentEma);
+    previousEma = currentEma; // Update previous EMA
+  }
+  return ema;
+};
+
 const StockChart = ({ priceData, indicators }) => {
     const [plotData, setPlotData] = useState([
         {
