@@ -63,9 +63,12 @@ const TradingDashboard = () => {
 
   return (
     <div className="p-4 space-y-4">
+       <div className="d-flex justify-content-center p-2">
+            <h1>Strategy Metrics</h1>
+       </div>
       {/* Summary Statistics */}
-      <div>
-        <Card>
+      <div className="d-flex justify-content-evenly flex-wrap">
+        <Card className="p-4 flex-fill">
           <Card.Body className="pt-6">
             <div>
               <div>
@@ -78,26 +81,26 @@ const TradingDashboard = () => {
           </Card.Body>
         </Card>
 
-        <Card>
+        <Card className="p-4 flex-fill">
           <Card.Body className="pt-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">Win Rate</p>
-                <h3 className="text-2xl font-bold text-blue-600 text-success">{winRate}%</h3>
+                <h3 className="text-2xl font-bold text-blue-600 text-success">
+              <PieChart className="w-8 h-8 text-blue-600" /> {winRate}%</h3>
               </div>
-              <PieChart className="w-8 h-8 text-blue-600" />
             </div>
           </Card.Body>
         </Card>
 
-        <Card>
+        <Card className="p-4 flex-fill">
           <Card.Body className="pt-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">Max Drawdown</p>
-                <h3 className="text-2xl font-bold text-danger">{metrics.max_drawdown.toFixed(2)}%</h3>
+                <h3 className="text-2xl font-bold text-danger">
+              <TrendingDown className="w-8 h-8 text-danger" /> {metrics.max_drawdown.toFixed(2)}%</h3>
               </div>
-              <TrendingDown className="w-8 h-8 text-danger" />
             </div>
           </Card.Body>
         </Card>
@@ -188,8 +191,8 @@ const TradingDashboard = () => {
         </Tabs>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
+      <div className="d-flex justify-content-evenly flex-wrap">
+        <Card className="p-4 flex-fill">
           <Card.Header>
             <Card.Title>Trading Statistics</Card.Title  >
           </Card.Header>
@@ -219,7 +222,7 @@ const TradingDashboard = () => {
           </Card.Body>
         </Card>
 
-        <Card>
+        <Card className="p-4  flex-fill">
           <Card.Header>
             <Card.Title>Current Position</Card.Title>
           </Card.Header>
