@@ -1,0 +1,54 @@
+{
+    "strategies": [
+        {
+            "name": "Bollinger Band",
+            "code": "BB",
+            "active": true
+        },
+        {
+            "name": "Simple Moving Average",
+            "code": "SMA",
+            "active": false
+        },
+        {
+            "name": "Exponential Moving Average",
+            "code": "EMA",
+            "active": false
+        },
+        {
+            "name": "Relative Strength Index",
+            "code": "RSI",
+            "active": false
+        },
+        {
+            "name": "Moving Average Convergence Divergence",
+            "code": "MACD",
+            "active": false
+        },
+        {
+            "name": "Stochastic Oscillator",
+            "code": "STO",
+            "active": false
+        },
+        {
+            "name": "Volume Weighted Average Price",
+            "code": "VWAP",
+            "active": false
+        },
+        {
+            "name": "Ichimoku Cloud",
+            "code": "ICH",
+            "active": false
+        },
+        {
+            "name": "Parabolic SAR",
+            "code": "PSAR",
+            "active": false
+        },
+        {
+            "name": "Average True Range",
+            "code": "ATR",
+            "active": false
+        }
+    ]
+}

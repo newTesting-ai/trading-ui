@@ -6,7 +6,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { TrendingUp, TrendingDown, DollarSign, Activity, PieChart, AlertCircle } from 'lucide-react';
 
 import Plot from 'react-plotly.js';
-import metrics from '../data'
+import metrics from '../data/metrics'
 
 const TradingDashboard = () => {
   const [timeRange, setTimeRange] = useState('all');
