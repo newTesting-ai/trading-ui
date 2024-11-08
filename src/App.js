@@ -29,6 +29,7 @@ import { Activity, Settings, AlertCircle, BookOpen, TrendingUp, History, BarChar
 import TradingDashboard from './dashboard/dashboard'
 import Strategy from './strategies/strategy'
 import TradeHistory from './history/history'
+import Performance from './performance/performance'
 // Layout Component
 const DashboardLayout = () => {
   const location = useLocation();
@@ -89,9 +90,9 @@ const DashboardLayout = () => {
 
 // Page Components (placeholders)
 const Overview = () => <div>Overview Dashboard</div>;
-const Positions = () => <div>Positions & Orders</div>;
-const Performance = () => <div>Performance Analytics</div>;
-const Alerts = () => <div>Alerts & Notifications</div>;
+const Positions = () => <div>Positions & Orders will be available in next update.</div>;
+const Alerts = () => <div>Alerts & Notifications will be available in next update.</div>;
+const Monitoring = () => <div>Monitoring will be available in next update.</div>
 
 // Main App with Routes
 const App = () => {
@@ -103,11 +104,11 @@ const App = () => {
           <Route path="positions" element={<Positions />} />
           <Route path="performance" element={<Performance />} />
           <Route path="strategies" element={<Strategy />} />
-          <Route path="monitoring" element={<TradingDashboard />} />
+          <Route path="monitoring" element={<Monitoring />} />
           <Route path="history" element={<TradeHistory />} />
           <Route path="alerts" element={<Alerts />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="/strategies/result/*" element={<TradingDashboard />} />
+          <Route path="/strategies/result/:code" element={<TradingDashboard />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

@@ -1,6 +1,11 @@
 {
     "strategies": [
         {
+            "name": "Buy/Sell alternatively",
+            "code": "DEFAULT",
+            "active": true
+        },
+        {
             "name": "Bollinger Band",
             "code": "BB",
             "active": true

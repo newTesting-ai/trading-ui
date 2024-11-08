@@ -1,22 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, Activity, PieChart, AlertCircle } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 
 import Plot from 'react-plotly.js';
 import metrics from '../data/metrics'
+import bb from '../data/bollinger_bands'
 
 const TradingDashboard = () => {
+  const { code } = useParams();
+  const [metricData, setMetricData] = useState(null);
+  const [winRate, setWinRate] = useState(0)
+
+  useEffect(() => {
+    if(code === "BB") {
+      setMetricData(bb);
+    } else {
+      setMetricData(metrics);
+    }
+  }, [code]);
+
+
+  useEffect(() => {
+    // Calculate win rate after metricData has been updated
+    if (metricData !== null && metricData.winning_trades && metricData.no_of_trades) {
+      setWinRate((metricData.winning_trades / metricData.no_of_trades * 100).toFixed(2));
+    }
+  }, [metricData]);
+
   const [timeRange, setTimeRange] = useState('all');
   // Format timestamp to readable date
   const formatDate = (timestamp) => {
     return new Date(timestamp).toLocaleDateString();
   };
-
-  // Calculate win rate
-  const winRate = (metrics.winning_trades / metrics.no_of_trades * 100).toFixed(2);
 
   // Process chart data
   const processChartData = (oldData, drawdown=false) => {
@@ -57,10 +76,13 @@ const TradingDashboard = () => {
         },
       ];
     }
-    console.log("R: ", res)
     return res;
   };
-
+  if(metricData === null) {
+    return (
+      <div>Data is being loaded Please wait!!!</div>
+    )
+  }
   return (
     <div className="p-4 space-y-4">
        <div className="d-flex justify-content-center p-2">
@@ -73,8 +95,8 @@ const TradingDashboard = () => {
             <div>
               <div>
                 <p>Total Profit/Loss</p>
-                <h3 className={`text-2xl font-bold ${metrics.total_profit - metrics.total_loss >= 0 ? 'text-success' : 'text-danger'}`}>
-                  {(metrics.total_profit - metrics.total_loss).toFixed(2)}
+                <h3 className={`text-2xl font-bold ${metricData.total_profit - metricData.total_loss >= 0 ? 'text-success' : 'text-danger'}`}>
+                  {(metricData.total_profit - metricData.total_loss).toFixed(2)}
                 </h3>
               </div>
             </div>
@@ -99,7 +121,7 @@ const TradingDashboard = () => {
               <div>
                 <p className="text-sm font-medium text-gray-500">Max Drawdown</p>
                 <h3 className="text-2xl font-bold text-danger">
-              <TrendingDown className="w-8 h-8 text-danger" /> {metrics.max_drawdown.toFixed(2)}%</h3>
+              <TrendingDown className="w-8 h-8 text-danger" /> {metricData.max_drawdown.toFixed(2)}%</h3>
               </div>
             </div>
           </Card.Body>
@@ -117,7 +139,7 @@ const TradingDashboard = () => {
           <Tab eventKey="equity" title="Equity Curve">
             <div className="h-96">
                 <Plot
-                  data={processChartData(metrics.equity)}
+                  data={processChartData(metricData.equity)}
                   layout={{
                     title: 'Equity Chart (Daily Stock Prices)',
                     xaxis: {
@@ -142,7 +164,7 @@ const TradingDashboard = () => {
           <Tab eventKey="pnl" title="PnL">
             <div className="h-96">
                 <Plot
-                  data={processChartData(metrics.pnl, true)}
+                  data={processChartData(metricData.pnl, true)}
                   layout={{
                     title: 'PnL Chart (Daily Stock Prices)',
                     xaxis: {
@@ -167,7 +189,7 @@ const TradingDashboard = () => {
           <Tab eventKey="drawdown" title="Drawdown">
             <div className="h-96">
                 <Plot
-                  data={processChartData(metrics.drawdown)}
+                  data={processChartData(metricData.drawdown)}
                   layout={{
                     title: 'Drawdown Chart (Daily Stock Prices)',
                     xaxis: {
@@ -200,23 +222,23 @@ const TradingDashboard = () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span>Total Trades:</span>
-                <span className="font-bold">{metrics.no_of_trades}</span>
+                <span className="font-bold">{metricData.no_of_trades}</span>
               </div>
               <div className="flex justify-between">
                 <span>Winning Trades:</span>
-                <span className="font-bold text-success">{metrics.winning_trades}</span>
+                <span className="font-bold text-success">{metricData.winning_trades}</span>
               </div>
               <div className="flex justify-between">
                 <span>Losing Trades:</span>
-                <span className="font-bold text-danger">{metrics.total_losing_trades}</span>
+                <span className="font-bold text-danger">{metricData.total_losing_trades}</span>
               </div>
               <div className="flex justify-between">
                 <span>Max Consecutive Wins:</span>
-                <span className="font-bold text-success">{metrics.max_cons_win}</span>
+                <span className="font-bold text-success">{metricData.max_cons_win}</span>
               </div>
               <div className="flex justify-between">
                 <span>Max Consecutive Losses:</span>
-                <span className="font-bold text-danger">{metrics.max_cons_loss}</span>
+                <span className="font-bold text-danger">{metricData.max_cons_loss}</span>
               </div>
             </div>
           </Card.Body>
@@ -230,19 +252,19 @@ const TradingDashboard = () => {
             <div className="space-y-2">
               {/*<div className="flex justify-between">
                 <span>Open Trades:</span>
-                <span className="font-bold">{metrics.open_trades}</span>
+                <span className="font-bold">{metricData.open_trades}</span>
               </div>*/}
               <div className="flex justify-between">
                 <span>Max Equity:</span>
-                <span className="font-bold text-success">${metrics.max_equity.toFixed(2)}</span>
+                <span className="font-bold text-success">${metricData.max_equity.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Max Unrealized Equity:</span>
-                <span className="font-bold">${metrics.max_unrealised_equity.toFixed(2)}</span>
+                <span className="font-bold">${metricData.max_unrealised_equity.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Max Unrealized Drawdown:</span>
-                <span className="font-bold text-danger">{metrics.max_unrealised_drawdown.toFixed(2)}%</span>
+                <span className="font-bold text-danger">{metricData.max_unrealised_drawdown.toFixed(2)}%</span>
               </div>
             </div>
           </Card.Body>
@@ -266,7 +288,7 @@ const TradingDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {metrics.orders.slice(-5).map((order) => (
+                {metricData.orders.slice(-5).map((order) => (
                   <tr key={order.order_id} className="border-b">
                     <td className="p-2">{order.order_id}</td>
                     <td className={`p-2 ${order.order_type === 'buy' ? 'text-success' : 'text-danger'}`}>
