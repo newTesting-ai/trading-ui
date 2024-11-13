@@ -147,7 +147,7 @@ const TradingDashboard = () => {
                       fixedrange: false,
                     },
                     yaxis: {
-                      title: 'Price (USD)',
+                      title: 'Capital',
                       fixedrange: false,
                     },
                   }}
@@ -172,7 +172,7 @@ const TradingDashboard = () => {
                       fixedrange: false,
                     },
                     yaxis: {
-                      title: 'Price (USD)',
+                      title: 'Amount',
                       fixedrange: false,
                     },
                   }}
@@ -197,7 +197,7 @@ const TradingDashboard = () => {
                       fixedrange: false,
                     },
                     yaxis: {
-                      title: 'Price (USD)',
+                      title: 'Percent',
                       fixedrange: false,
                     },
                   }}

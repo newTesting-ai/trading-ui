@@ -143,13 +143,13 @@ const Performance = () => {
                             <Plot
                                 data={equityChartData}
                                 layout={{
-                                    title: 'Equity Chart (Daily Stock Prices)',
+                                    title: 'Equity Chart',
                                     xaxis: {
                                         //          rangeslider: { visible: true },            // Adds a range slider for zooming and panning
                                         fixedrange: false,
                                     },
                                     yaxis: {
-                                        title: 'Price (USD)',
+                                        title: 'Capital',
                                         fixedrange: false,
                                     },
                                 }}
