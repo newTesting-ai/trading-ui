@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, DollarSign, Activity, PieChart, AlertCircle } from 'lucide-react';
-
 import Plot from 'react-plotly.js';
 import metrics from '../data/metrics'
 import bb from '../data/bollinger_bands'

@@ -23,16 +23,18 @@
 // };
 
 // export default App;
-import React from 'react';
+import React, {useState} from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useLocation, Outlet } from 'react-router-dom';
 import { Activity, Settings, AlertCircle, BookOpen, TrendingUp, History, BarChart2, LineChart } from 'lucide-react';
 import TradingDashboard from './dashboard/dashboard'
 import Strategy from './strategies/strategy'
 import TradeHistory from './history/history'
 import Performance from './performance/performance'
+import Position from './positions/position'
 // Layout Component
 const DashboardLayout = () => {
   const location = useLocation();
+  const [isCollapsed, setIsCollapsed] = useState(true);
   
   const navItems = [
     { path: '/', label: 'Overview', icon: LineChart },
@@ -45,6 +47,10 @@ const DashboardLayout = () => {
     { path: '/settings', label: 'Settings', icon: Settings }
   ];
 
+  const toggleNav = () => {
+    setIsCollapsed(!isCollapsed);
+  }
+
   return (
     <div style={{ width: '100%', height: '500px' }}>
     {/*<label htmlFor="indicators">Select Indicator: </label>
@@ -56,12 +62,12 @@ const DashboardLayout = () => {
         <option value="candle">CandleSticks</option>
       </select>
       <StockChart priceData={stockData}  indicators={selectedIndicators}  />*/}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light p-3">
+      <nav className="navbar navbar-expand-sm navbar-light bg-light p-3">
         <a className="navbar-brand" href="#">AlgoTrading</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button className="navbar-toggler" type="button" onClick={toggleNav} data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className={isCollapsed ? `collapse` : `` + ` navbar-collapse`} id="navbarNav">
           <ul className="navbar-nav">
             {navItems.map(({ path, label, icon: Icon }) => (
               <li><Link
@@ -90,7 +96,6 @@ const DashboardLayout = () => {
 
 // Page Components (placeholders)
 const Overview = () => <div>Overview Dashboard</div>;
-const Positions = () => <div>Positions & Orders will be available in next update.</div>;
 const Alerts = () => <div>Alerts & Notifications will be available in next update.</div>;
 const Monitoring = () => <div>Monitoring will be available in next update.</div>
 
@@ -101,7 +106,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<DashboardLayout />}>
           <Route index element={<Overview />} />
-          <Route path="positions" element={<Positions />} />
+          <Route path="positions" element={<Position />} />
           <Route path="performance" element={<Performance />} />
           <Route path="strategies" element={<Strategy />} />
           <Route path="monitoring" element={<Monitoring />} />
