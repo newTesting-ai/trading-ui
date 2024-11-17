@@ -47,7 +47,7 @@ console.log(indicators)
 
     useEffect(() => {
         var plotArray = [{
-          x: priceData.map(data => data.timestamp),         // Same x-values for close prices
+          x: priceData.map(data => data.date),         // Same x-values for close prices
           y: priceData.map(data => data.close),        // Close prices for the line
           type: 'scatter',
           mode: 'lines',                       // Line with markers
@@ -57,7 +57,7 @@ console.log(indicators)
         for(const indicator of indicators) {
             if(indicator == 'candle') {
                 plotArray.push({
-                  x: priceData.map(data => data.timestamp),        // Dates for each candle
+                  x: priceData.map(data => data.date),        // Dates for each candle
                   open: priceData.map(data => data.open),     // Open prices
                   high: priceData.map(data => data.high),     // High prices
                   low: priceData.map(data => data.low),       // Low prices
@@ -91,7 +91,7 @@ console.log(indicators)
         responsive: true,
         displayModeBar: true,
       }}
-      style={{ width: "100%", height: "200%" }}
+      style={{ height: "100%" }}
     />
   );
 };

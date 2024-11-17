@@ -3,57 +3,79 @@
         {
             "name": "Buy/Sell alternatively",
             "code": "DEFAULT",
-            "active": true
+            "active": true,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Bollinger Band",
             "code": "BB",
-            "active": true
+            "active": true,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Simple Moving Average",
             "code": "SMA",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Exponential Moving Average",
             "code": "EMA",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Relative Strength Index",
             "code": "RSI",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Moving Average Convergence Divergence",
             "code": "MACD",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Stochastic Oscillator",
             "code": "STO",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Volume Weighted Average Price",
             "code": "VWAP",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Ichimoku Cloud",
             "code": "ICH",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Parabolic SAR",
             "code": "PSAR",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         },
         {
             "name": "Average True Range",
             "code": "ATR",
-            "active": false
+            "active": false,
+            "pnl": 123.12,
+            "win": 45.7
         }
     ]
 }

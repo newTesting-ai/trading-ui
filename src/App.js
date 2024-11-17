@@ -1,23 +1,23 @@
 // import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 
-// //import StockChart from './charts/StockChart';
-// //import stockData from './data'
+// import StockChart from './charts/StockChart';
+// import stockData from './data'
 // const App = () => {
-// //   const [selectedIndicators, setSelectedIndicators] = useState([]);
-// //
-// //
-// //  const handleIndicatorChange = (event) => {
-// //    const { value, checked } = event.target;
-// //     setSelectedIndicators(prevIndicators => {
-// //    // Only add if checked and not already in the list, otherwise remove
-// //    if (!prevIndicators.includes(value)) {
-// //      return [...prevIndicators, value];
-// //    } else if (prevIndicators.includes(value)) {
-// //      return prevIndicators.filter(indicator => indicator !== value);
-// //    }
-// //    return prevIndicators;
-// //  });
-// //  };
+//   const [selectedIndicators, setSelectedIndicators] = useState([]);
+
+
+//  const handleIndicatorChange = (event) => {
+//    const { value, checked } = event.target;
+//     setSelectedIndicators(prevIndicators => {
+//    // Only add if checked and not already in the list, otherwise remove
+//    if (!prevIndicators.includes(value)) {
+//      return [...prevIndicators, value];
+//    } else if (prevIndicators.includes(value)) {
+//      return prevIndicators.filter(indicator => indicator !== value);
+//    }
+//    return prevIndicators;
+//  });
+//  };
 
   
 // };
@@ -31,10 +31,11 @@ import Strategy from './strategies/strategy'
 import TradeHistory from './history/history'
 import Performance from './performance/performance'
 import Position from './positions/position'
+import Overview from './overview/overview'
 // Layout Component
 const DashboardLayout = () => {
   const location = useLocation();
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   
   const navItems = [
     { path: '/', label: 'Overview', icon: LineChart },
@@ -53,17 +54,8 @@ const DashboardLayout = () => {
 
   return (
     <div style={{ width: '100%', height: '500px' }}>
-    {/*<label htmlFor="indicators">Select Indicator: </label>
-      <select id="indicators" value={selectedIndicators} onChange={handleIndicatorChange}>
-        <option value="">None</option>
-        <option value="sma">Simple Moving Average (SMA)</option>
-        <option value="ema">Exponential Moving Average (EMA)</option>
-        <option value="rsi">Relative Strength Index (RSI)</option>
-        <option value="candle">CandleSticks</option>
-      </select>
-      <StockChart priceData={stockData}  indicators={selectedIndicators}  />*/}
-      <nav className="navbar navbar-expand-sm navbar-light bg-light p-3">
-        <a className="navbar-brand" href="#">AlgoTrading</a>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light p-3">
+        <a className="navbar-brand" href="/">AlgoTrading</a>
         <button className="navbar-toggler" type="button" onClick={toggleNav} data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -95,7 +87,6 @@ const DashboardLayout = () => {
 };
 
 // Page Components (placeholders)
-const Overview = () => <div>Overview Dashboard</div>;
 const Alerts = () => <div>Alerts & Notifications will be available in next update.</div>;
 const Monitoring = () => <div>Monitoring will be available in next update.</div>
 
