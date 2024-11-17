@@ -47,7 +47,6 @@ const Performance = () => {
             ...prevState,
             [type]: event.target.checked,
         }));
-        console.log(selectedSeries)
     };
 
     // Process chart data based on type and drawdown status

@@ -32,6 +32,7 @@ import TradeHistory from './history/history'
 import Performance from './performance/performance'
 import Position from './positions/position'
 import Overview from './overview/overview'
+import Backtest from './backtest/backtest'
 // Layout Component
 const DashboardLayout = () => {
   const location = useLocation();
@@ -42,6 +43,7 @@ const DashboardLayout = () => {
     { path: '/positions', label: 'Positions', icon: TrendingUp },
     { path: '/performance', label: 'Performance', icon: BarChart2 },
     { path: '/strategies', label: 'Strategies', icon: BookOpen },
+    { path: '/backtest', label: 'Backtest', icon: BookOpen },
     { path: '/monitoring', label: 'Monitoring', icon: Activity },
     { path: '/history', label: 'History', icon: History },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle },
@@ -100,6 +102,7 @@ const App = () => {
           <Route path="positions" element={<Position />} />
           <Route path="performance" element={<Performance />} />
           <Route path="strategies" element={<Strategy />} />
+          <Route path="backtest" element={<Backtest />} />
           <Route path="monitoring" element={<Monitoring />} />
           <Route path="history" element={<TradeHistory />} />
           <Route path="alerts" element={<Alerts />} />

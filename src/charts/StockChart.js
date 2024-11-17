@@ -43,7 +43,6 @@ const StockChart = ({ priceData, indicators }) => {
           line: { color: 'lightblue' },                     // Color for the close price line
           name: 'Close Price',                        // Legend entry
         }])
-console.log(indicators)
 
     useEffect(() => {
         var plotArray = [{
@@ -70,7 +69,6 @@ console.log(indicators)
         }
         setPlotData(plotArray);
     }, [indicators]);
-    console.log(plotData)
   return (
     <Plot
       data={plotData}
@@ -82,7 +80,7 @@ console.log(indicators)
           fixedrange: false,
         },
         yaxis: {
-          title: 'Price (USD)',
+          title: 'Price',
           fixedrange: false,
         },
       }}
