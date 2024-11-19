@@ -25,7 +25,7 @@
 // export default App;
 import React, {useState} from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useLocation, Outlet } from 'react-router-dom';
-import { Activity, Settings, AlertCircle, BookOpen, TrendingUp, History, BarChart2, LineChart } from 'lucide-react';
+import { Activity, Settings, AlertCircle, BookOpen, TrendingUp, History, BarChart2, LineChart, Building } from 'lucide-react';
 import TradingDashboard from './dashboard/dashboard'
 import Strategy from './strategies/strategy'
 import TradeHistory from './history/history'
@@ -33,6 +33,8 @@ import Performance from './performance/performance'
 import Position from './positions/position'
 import Overview from './overview/overview'
 import Backtest from './backtest/backtest'
+import StrategyBuilder from './createStrategy/createStrategy'
+
 // Layout Component
 const DashboardLayout = () => {
   const location = useLocation();
@@ -44,10 +46,11 @@ const DashboardLayout = () => {
     { path: '/performance', label: 'Performance', icon: BarChart2 },
     { path: '/strategies', label: 'Strategies', icon: BookOpen },
     { path: '/backtest', label: 'Backtest', icon: BookOpen },
+    { path: '/builder', label: 'Builder', icon: Building },
     { path: '/monitoring', label: 'Monitoring', icon: Activity },
     { path: '/history', label: 'History', icon: History },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle },
-    { path: '/settings', label: 'Settings', icon: Settings }
+    { path: '/settings', label: 'Settings', icon: Settings },
   ];
 
   const toggleNav = () => {
@@ -107,6 +110,7 @@ const App = () => {
           <Route path="history" element={<TradeHistory />} />
           <Route path="alerts" element={<Alerts />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="builder" element={<StrategyBuilder />} />
           <Route path="/strategies/result/:code" element={<TradingDashboard />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
