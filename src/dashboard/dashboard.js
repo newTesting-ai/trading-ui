@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 
 import Plot from 'react-plotly.js';
 import stocks from '../data/stocks_nse'
+import intervals from '../data/intervals'
 import bb from '../data/bollinger_bands'
 
 const TradingDashboard = () => {
@@ -24,24 +25,6 @@ const TradingDashboard = () => {
   const [winRate, setWinRate] = useState(0)
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const intervals = [
-    {
-        "name": "1 Minute",
-        "symbol": "1minute"
-    },
-    {
-        "name": "3 Minute",
-        "symbol": "3minute"
-    },
-    {
-        "name": "5 Minute",
-        "symbol": "5minute"
-    },
-    {
-        "name": "1 day",
-        "symbol": "day"
-    }
-  ]
   useEffect(() => {
     const fetchData = async () => {
       try {

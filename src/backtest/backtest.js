@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import strategies from '../data/strategies'
 import stocks from '../data/stocks_nse'
+import intervals from '../data/intervals'
 
 const Backtest = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -11,24 +12,6 @@ const Backtest = () => {
     const [strategy, setStrategy] = useState(null);
     const [error, setError] = useState(null);
     const [sent, setSent] = useState(false);
-    const intervals = [
-        {
-            "name": "1 Minute",
-            "symbol": "1minute"
-        },
-        {
-            "name": "3 Minute",
-            "symbol": "3minute"
-        },
-        {
-            "name": "5 Minute",
-            "symbol": "5minute"
-        },
-        {
-            "name": "1 day",
-            "symbol": "day"
-        }
-      ]
 
     const toggleDropdown = () => {
         setIsCollapsed(!isCollapsed);

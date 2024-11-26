@@ -1,0 +1,22 @@
+[
+    {
+        "name": "1 Minute",
+        "symbol": "1minute"
+    },
+    {
+        "name": "30 Minute",
+        "symbol": "30minute"
+    },
+    {
+        "name": "1 Day",
+        "symbol": "day"
+    },
+    {
+        "name": "Week",
+        "symbol": "week"
+    },
+    {
+        "name": "Month",
+        "symbol": "month"
+    }
+  ]
