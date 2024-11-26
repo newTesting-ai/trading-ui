@@ -1,31 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import Card from 'react-bootstrap/Card';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
-import Plot from 'react-plotly.js';
-import metrics from '../data/metrics'
-import bb from '../data/bollinger_bands'
 import strategies from '../data/strategies'
+import stocks from '../data/stocks_nse'
 
 const Backtest = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isIntervalCollapsed, setIntervalCollapsed] = useState(false);
+    const [interval, setInterval] = useState("day");
     const [isStrategyCollapsed, setIsStrategy] = useState(false);
-    const [stock, setStock] = useState(null);
+    const [stock, setStock] = useState("NSE_EQ|INE758T01015");
     const [strategy, setStrategy] = useState(null);
-    const stocks = [
+    const [error, setError] = useState(null);
+    const [sent, setSent] = useState(false);
+    const intervals = [
         {
-            "name": "Tata Consultancy Service",
-            "symbol": "TCS"
+            "name": "1 Minute",
+            "symbol": "1minute"
         },
         {
-            "name": "Mahindra",
-            "symbol": "MH"
+            "name": "3 Minute",
+            "symbol": "3minute"
         },
         {
-            "name": "Apple",
-            "symbol": "AAPL"
+            "name": "5 Minute",
+            "symbol": "5minute"
+        },
+        {
+            "name": "1 day",
+            "symbol": "day"
         }
-    ]
+      ]
 
     const toggleDropdown = () => {
         setIsCollapsed(!isCollapsed);
@@ -34,6 +37,9 @@ const Backtest = () => {
 
     const toggleStrategyDropdown = () => {
         setIsStrategy(!isStrategyCollapsed);
+    }
+    const toggleIntervalDropdown = () => {
+        setIntervalCollapsed(!isIntervalCollapsed);
     }
 
     const updateStock = (e) => {
@@ -46,8 +52,25 @@ const Backtest = () => {
         toggleStrategyDropdown();
     }
 
-    const runBacktest = () => {
-        console.log(stock, strategy);
+    const updateInterval = (e) => {
+        setInterval(e.target.id);
+        toggleIntervalDropdown();
+    }
+
+    const runBacktest = async() => {
+        console.log(stock, strategy, interval);
+        try {
+            // Make the API request and ignore the result
+            setSent(true)
+            await fetch(`http://localhost:8000/api/v2/backtesting?interval=${interval}&trade_id=${stock}&strategy=${strategy}`, {
+              method: "GET", // Change method if needed
+              headers: { "Content-Type": "application/json" }
+            });
+            console.log("API request sent successfully");
+          } catch (error) {
+            console.error("Error sending API request:", error);
+            setError(error)
+        }
     }
     return (
         <div className="p-4 space-y-4">
@@ -62,8 +85,8 @@ const Backtest = () => {
                             Stocks
                         </button>
                         <ul className={`dropdown-menu ${isCollapsed ? `show` : ``}`}>
-                            {stocks.map((item, index) => (
-                                <li className="dropdown-item" key={index} id={item.symbol} onClick={updateStock}>{item.name}</li>
+                            {stocks.filter((item) => item.instrument_type === "EQ").map((item, index) => (
+                                <li className="dropdown-item" key={index} id={item.instrument_key} onClick={updateStock}>{item.name}</li>
                             ))}
                         </ul>
                     </div>
@@ -77,11 +100,31 @@ const Backtest = () => {
                             ))}
                         </ul>
                     </div>
+                    <div className="dropdown">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" onClick={toggleIntervalDropdown}  data-bs-toggle="dropdown" aria-expanded="false">
+                            Interval
+                        </button>
+                        <ul className={`dropdown-menu ${isIntervalCollapsed ? `show` : ``}`}>
+                            {intervals.map((item, index) => (
+                                <li className="dropdown-item" key={index} id={item.symbol} onClick={updateInterval}>{item.name}</li>
+                            ))}
+                        </ul>
+                    </div>
                     <button className="btn btn-primary" type="button" onClick={runBacktest} aria-expanded="false">
                         Run Backtest
                     </button>
                 </div>
                 <p>Selected Strategy: {strategy}, Selected Stock: {stock}</p>
+                <div>
+                    {sent ? (
+                        <p>Backtesting in progress Please check in few time.</p>
+                        ) : error ? (
+                        <p>Error: {error}</p>
+                    ) : (
+                        <p></p>
+                    )}
+                </div>
+                
             </div>
         </div>
     );
