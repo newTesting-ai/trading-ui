@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import strategies from '../data/strategies'
+// import strategies from '../data/strategies'
 import stocks from '../data/stocks_nse'
 import intervals from '../data/intervals'
 
@@ -12,7 +12,36 @@ const Backtest = () => {
     const [strategy, setStrategy] = useState(null);
     const [error, setError] = useState(null);
     const [sent, setSent] = useState(false);
-
+    const [strategies, setStrategies] = useState([]);
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const fetchStrategies = async () => {
+        try {
+          const response = await fetch("http://localhost:8000/api/v2/backtesting/strategies");
+          if (!response.ok) {
+            throw new Error("Failed to fetch strategies");
+          }
+          const data = await response.json();
+          setStrategies(data || []); // Assuming the API returns an object with a "strategies" array
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchStrategies();
+    }, []);
+  
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+  
+    if (error) {
+      return <div>Error: {error}</div>;
+    }
+  
     const toggleDropdown = () => {
         setIsCollapsed(!isCollapsed);
     }
@@ -78,7 +107,7 @@ const Backtest = () => {
                             Strategy
                         </button>
                         <ul className={`dropdown-menu ${isStrategyCollapsed ? `show` : ``}`}>
-                            {strategies.strategies.map((item, index) => (
+                            {strategies.map((item, index) => (
                                 <li className="dropdown-item" key={index} id={item.code} onClick={updateStrategy}>{item.name}</li>
                             ))}
                         </ul>
