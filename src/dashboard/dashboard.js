@@ -28,7 +28,12 @@ const TradingDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/results?interval=${interval}&trade_id=${stock}&strategy=${code}`);
+        const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/results?interval=${interval}&trade_id=${stock}&strategy=${code}`, {
+          method: "get",
+          headers: new Headers({
+            "ngrok-skip-browser-warning": "69420",
+          }),
+        });
         if (!response.ok) {
           // Handle HTTP errors
           const errorData = await response.json();
