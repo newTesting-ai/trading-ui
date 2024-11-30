@@ -18,7 +18,7 @@ const Backtest = () => {
     useEffect(() => {
       const fetchStrategies = async () => {
         try {
-          const response = await fetch("http://localhost:8000/api/v2/backtesting/strategies");
+          const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies");
           if (!response.ok) {
             throw new Error("Failed to fetch strategies");
           }
@@ -74,7 +74,7 @@ const Backtest = () => {
         try {
             // Make the API request and ignore the result
             setSent(true)
-            await fetch(`http://localhost:8000/api/v2/backtesting?interval=${interval}&trade_id=${stock}&strategy=${strategy}`, {
+            await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting?interval=${interval}&trade_id=${stock}&strategy=${strategy}`, {
               method: "GET", // Change method if needed
               headers: { "Content-Type": "application/json" }
             });
