@@ -11,14 +11,14 @@ const PORTFOLIO_SUBSCRIPTION = gql`
   subscription {
     portfolioUpdate {
       initialCapital
+      capital
       openPositions
       orders {
         symbol {
-          name
-          img
+            name
         }
         type
-        quantitiy
+        quantity
         entryPrice
         currentPrice
       }
@@ -40,7 +40,8 @@ const Overview = () => {
     const portfolioData = data.portfolioUpdate;
     console.log(data, portfolioData)
     const openPositions = portfolioData.orders.length;
-    let pnl = portfolioData.orders.reduce((sum, obj) => sum + (obj.currentPrice - obj.entryPrice) * obj.quantitiy, 0);
+    let pnl = portfolioData.orders.reduce((sum, obj) => sum + (obj.currentPrice - obj.entryPrice) * obj.quantity, 0);
+    pnl = pnl + portfolioData.capital
     let pnlPercentage = pnl / portfolioData.initialCapital;
     pnl = Number(pnl.toFixed(5));
     pnlPercentage = Number(pnlPercentage.toFixed(4)) * 100;
@@ -50,6 +51,7 @@ const Overview = () => {
     } else {
         up = false;
     }
+    console.log(pnl, pnlPercentage)
     const buyingPower = portfolioData.initialCapital - portfolioData.orders.reduce((sum, obj) => sum + obj.entryPrice * obj.quantitiy, 0);
 
     
@@ -108,7 +110,7 @@ const Overview = () => {
                         <Card.Body className="pt-6">
                             <Card.Title>Active Orders</Card.Title>
                             <div>
-                                {portfolioData.orders.splice(-3).map((item, index) => (
+                                {portfolioData.orders.splice(-2).map((item, index) => (
                                     <Card >
                                         <Card.Body>
                                             <p>{item.symbol.name}</p>
