@@ -82,7 +82,7 @@ const Backtest = () => {
         try {
             // Make the API request and ignore the result
             setSent(true)
-            await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting?interval=${interval}&trade_id=${stock}&strategy=${strategy}`, {
+            await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting?interval=${interval}&trade_id=${stock}&strategy=${strategy}&custom=${custom}`, {
               method: "GET", // Change method if needed
               headers: { "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": "69420"}

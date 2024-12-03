@@ -120,7 +120,7 @@ const IDE = () => {
 		try {
 			// Send the request
 			const res = await fetch(
-				"http://localhost:8000/api/v1/strategy/save_strategy",
+				"https://sheep-gorgeous-absolutely.ngrok-free.app/api/v1/strategy/save_strategy",
 				options
 			);
 			const result = await res.json();
