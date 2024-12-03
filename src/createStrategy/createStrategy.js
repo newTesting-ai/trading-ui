@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ConditionModal from "./conditionModal";
-
+import IDE from "./ideComponent";
 // The structure to represent the buy/sell conditions
 const generateStrategyStructure = (buyConditions, sellConditions) => {
   return {
@@ -97,56 +97,7 @@ const StrategyBuilder = () => {
       {/* Main Area */}
       <div style={styles.main}>
         {activeStrategy ? (
-          <>
-            <h2>{activeStrategy.name}</h2>
-            <div style={styles.strategySection}>
-              <h3>Buy Conditions</h3>
-              <ul>
-                {buyConditions.map((condition, index) => (
-                  <li key={index}>{condition.type}</li>
-                ))}
-              </ul>
-              <button
-                style={styles.addConditionButton}
-                onClick={() => {
-                  setCurrentSection("buy");
-                  setIsModalOpen(true);
-                }}
-              >
-                Add Condition
-              </button>
-            </div>
-
-            <div style={styles.strategySection}>
-              <h3>Sell Conditions</h3>
-              <ul>
-                {sellConditions.map((condition, index) => (
-                  <li key={index}>{condition.type}</li>
-                ))}
-              </ul>
-              <button
-                style={styles.addConditionButton}
-                onClick={() => {
-                  setCurrentSection("sell");
-                  setIsModalOpen(true);
-                }}
-              >
-                Add Condition
-              </button>
-            </div>
-
-            <div style={styles.actions}>
-              <button onClick={handleSaveStrategy} style={styles.saveButton}>
-                Save Strategy
-              </button>
-              <button
-                onClick={handleStartBacktest}
-                style={styles.backtestButton}
-              >
-                Start Backtest
-              </button>
-            </div>
-          </>
+          <IDE />
         ) : (
           <p>Please select or create a strategy to start building.</p>
         )}
@@ -240,3 +191,55 @@ const styles = {
 };
 
 export default StrategyBuilder;
+
+
+// <>
+//             <h2>{activeStrategy.name}</h2>
+//             <div style={styles.strategySection}>
+//               <h3>Buy Conditions</h3>
+//               <ul>
+//                 {buyConditions.map((condition, index) => (
+//                   <li key={index}>{condition.type}</li>
+//                 ))}
+//               </ul>
+//               <button
+//                 style={styles.addConditionButton}
+//                 onClick={() => {
+//                   setCurrentSection("buy");
+//                   setIsModalOpen(true);
+//                 }}
+//               >
+//                 Add Condition
+//               </button>
+//             </div>
+
+//             <div style={styles.strategySection}>
+//               <h3>Sell Conditions</h3>
+//               <ul>
+//                 {sellConditions.map((condition, index) => (
+//                   <li key={index}>{condition.type}</li>
+//                 ))}
+//               </ul>
+//               <button
+//                 style={styles.addConditionButton}
+//                 onClick={() => {
+//                   setCurrentSection("sell");
+//                   setIsModalOpen(true);
+//                 }}
+//               >
+//                 Add Condition
+//               </button>
+//             </div>
+
+//             <div style={styles.actions}>
+//               <button onClick={handleSaveStrategy} style={styles.saveButton}>
+//                 Save Strategy
+//               </button>
+//               <button
+//                 onClick={handleStartBacktest}
+//                 style={styles.backtestButton}
+//               >
+//                 Start Backtest
+//               </button>
+//             </div>
+//           </>

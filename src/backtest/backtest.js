@@ -14,6 +14,7 @@ const Backtest = () => {
     const [sent, setSent] = useState(false);
     const [strategies, setStrategies] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [custom, setCustom] = useState(true);
   
     useEffect(() => {
       const fetchStrategies = async () => {
@@ -65,7 +66,9 @@ const Backtest = () => {
     }
 
     const updateStrategy = (e) => {
-        setStrategy(e.target.id);
+        console.log(e)
+        setStrategy(e.code);
+        setCustom(e.custom);
         toggleStrategyDropdown();
     }
 
@@ -114,7 +117,7 @@ const Backtest = () => {
                         </button>
                         <ul className={`dropdown-menu ${isStrategyCollapsed ? `show` : ``}`}>
                             {strategies.map((item, index) => (
-                                <li className="dropdown-item" key={index} id={item.code} onClick={updateStrategy}>{item.name}</li>
+                                <li className="dropdown-item" key={index} id={item.code} onClick={(e) => updateStrategy(item)}>{item.name}</li>
                             ))}
                         </ul>
                     </div>
