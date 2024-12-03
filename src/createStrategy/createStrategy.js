@@ -49,6 +49,8 @@ const StrategyBuilder = () => {
     setBuyConditions([]);
     setSellConditions([]);
     setActiveStrategy(true);
+    setCode(null);
+
   };
 
   const addConditionToStrategy = (condition) => {
