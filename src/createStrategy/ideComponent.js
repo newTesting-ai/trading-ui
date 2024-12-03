@@ -101,7 +101,12 @@ const IDE = (loadStrategyId) => {
 			console.log(loadStrategyId["code"]["code"])
             setError(null);
             try {
-                const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v1/strategy/get_strategy?user_id=${userId}&strategy_id=${loadStrategyId["code"]["code"]}`);
+                const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v1/strategy/get_strategy?user_id=${userId}&strategy_id=${loadStrategyId["code"]["code"]}`, {
+					method: "get",
+					headers: new Headers({
+					  "ngrok-skip-browser-warning": "69420",
+					}),
+				  });
                 if (!response.ok) {
                     throw new Error('Strategy not found');
                 }
@@ -143,7 +148,8 @@ const IDE = (loadStrategyId) => {
 			method: 'POST',
 			headers: {
 				'Content-type': 'application/json',
-				Accept: 'application/json'
+				Accept: 'application/json',
+				"ngrok-skip-browser-warning": "69420",
 			},
 			body: JSON.stringify(data)
 		}
