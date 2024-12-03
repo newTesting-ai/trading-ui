@@ -14,29 +14,41 @@ const generateStrategyStructure = (buyConditions, sellConditions) => {
 
 const StrategyBuilder = () => {
   const [strategies, setStrategies] = useState([]);
-  const [activeStrategy, setActiveStrategy] = useState(null);
+  const [activeStrategy, setActiveStrategy] = useState(false);
   const [buyConditions, setBuyConditions] = useState([]);
   const [sellConditions, setSellConditions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState(null); // "buy" or "sell"
+  const [code, setCode] = useState(null)
   
   useEffect(() => {
-    // Load saved strategies from localStorage (if any)
-    const savedStrategies = JSON.parse(localStorage.getItem("strategies")) || [];
-    setStrategies(savedStrategies);
+    const fetchStrategies = async () => {
+      try {
+        const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies?custom=True", {
+          method: "get",
+          headers: new Headers({
+            "ngrok-skip-browser-warning": "69420",
+          }),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch strategies");
+        }
+        const data = await response.json();
+        setStrategies(data || []); // Assuming the API returns an object with a "strategies" array
+      } catch (err) {
+        console.log(err.message)
+        // setError(err.message);
+      }
+    };
+
+    fetchStrategies();
   }, []);
 
   const createNewStrategy = () => {
     // Reset the conditions for a new strategy
     setBuyConditions([]);
     setSellConditions([]);
-    setActiveStrategy({
-      id: Date.now(), // Generate a new strategy ID
-      name: `Strategy ${Date.now()}`,
-      buyConditions: [],
-      sellConditions: [],
-      active: true,
-    });
+    setActiveStrategy(true);
   };
 
   const addConditionToStrategy = (condition) => {
@@ -66,6 +78,10 @@ const StrategyBuilder = () => {
   };
 
   const loadStrategy = (strategyId) => {
+    console.log(strategyId)
+    setCode(strategyId)
+    setActiveStrategy(true);
+
     const strategy = strategies.find((strat) => strat.id === strategyId);
     if (strategy) {
       setActiveStrategy(strategy);
@@ -84,9 +100,9 @@ const StrategyBuilder = () => {
         <ul style={styles.strategyList}>
           {strategies.map((strategy) => (
             <li
-              key={strategy.id}
+              key={strategy.code}
               style={styles.strategyItem}
-              onClick={() => loadStrategy(strategy.id)}
+              onClick={() => loadStrategy(strategy)}
             >
               {strategy.name}
             </li>
@@ -97,7 +113,7 @@ const StrategyBuilder = () => {
       {/* Main Area */}
       <div style={styles.main}>
         {activeStrategy ? (
-          <IDE />
+          <IDE code={code}/>
         ) : (
           <p>Please select or create a strategy to start building.</p>
         )}

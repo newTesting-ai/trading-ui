@@ -1,6 +1,6 @@
 import Editor from "@monaco-editor/react";
 import MonacoEditor from 'react-monaco-editor'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import useWindowDimensions from '../util/dimension';
 import './ide.css'
 
@@ -82,7 +82,7 @@ var tempCode = {
 	ruby: ruby
 }
 
-const IDE = () => {
+const IDE = (loadStrategyId) => {
 
 	const { width, size, col } = useWindowDimensions();
 	const [code, setCode] = useState(tempCode['python']);
@@ -90,6 +90,36 @@ const IDE = () => {
 	const [strategyId, setStrategyId] = useState("");
 	const [responseMessage, setResponseMessage] = useState("");
 	const language = 'python'
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+	const userId = "abcfsa232"
+
+    useEffect(() => {
+        const fetchStrategyCode = async () => {
+            setLoading(true);
+			console.log(loadStrategyId["code"]["code"])
+            setError(null);
+            try {
+                const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v1/strategy/get_strategy?user_id=${userId}&strategy_id=${loadStrategyId["code"]["code"]}`);
+                if (!response.ok) {
+                    throw new Error('Strategy not found');
+                }
+                const data = await response.json();
+                setCode(data.strategy_code);
+				setStrategyName(loadStrategyId["code"]["name"])
+				setStrategyId(loadStrategyId["code"]["code"])
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (userId && loadStrategyId) {
+            fetchStrategyCode();
+        }
+    }, [loadStrategyId]);
 
 	const onChange = (newValue, e) =>{
 		setCode(newValue)
@@ -148,6 +178,10 @@ const IDE = () => {
 		autoClosingBrackets: true,
 		minimap: { scale: 10 }
 	};
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
 	return (
 		<>
 			<div>
