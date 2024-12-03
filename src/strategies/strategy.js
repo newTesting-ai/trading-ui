@@ -14,7 +14,12 @@ const Strategy = () => {
   useEffect(() => {
     const fetchStrategies = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/v2/backtesting/strategies");
+        const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies", {
+          method: "get",
+          headers: new Headers({
+            "ngrok-skip-browser-warning": "69420",
+          }),
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch strategies");
         }

@@ -19,7 +19,12 @@ const Backtest = () => {
     useEffect(() => {
       const fetchStrategies = async () => {
         try {
-          const response = await fetch("http://localhost:8000/api/v2/backtesting/strategies");
+          const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies", {
+            method: "get",
+            headers: new Headers({
+              "ngrok-skip-browser-warning": "69420",
+            }),
+          });
           if (!response.ok) {
             throw new Error("Failed to fetch strategies");
           }
@@ -77,9 +82,10 @@ const Backtest = () => {
         try {
             // Make the API request and ignore the result
             setSent(true)
-            await fetch(`http://localhost:8000/api/v2/backtesting?interval=${interval}&trade_id=${stock}&strategy=${strategy}&custom=${custom}`, {
+            await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting?interval=${interval}&trade_id=${stock}&strategy=${strategy}&custom=${custom}`, {
               method: "GET", // Change method if needed
-              headers: { "Content-Type": "application/json" }
+              headers: { "Content-Type": "application/json",
+                "ngrok-skip-browser-warning": "69420"}
             });
             console.log("API request sent successfully");
           } catch (error) {
