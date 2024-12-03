@@ -123,7 +123,9 @@ const IDE = (loadStrategyId) => {
 
         if (userId && loadStrategyId) {
             fetchStrategyCode();
-        }
+        } else {
+			setLoading(false);
+		}
     }, [loadStrategyId]);
 
 	const onChange = (newValue, e) =>{
