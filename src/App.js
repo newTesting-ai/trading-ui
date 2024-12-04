@@ -34,6 +34,7 @@ import Position from './positions/position'
 import Overview from './overview/overview'
 import Backtest from './backtest/backtest'
 import StrategyBuilder from './createStrategy/createStrategy'
+import Trading from './trading/trading'
 
 // Layout Component
 const DashboardLayout = () => {
@@ -43,11 +44,11 @@ const DashboardLayout = () => {
   const navItems = [
     { path: '/', label: 'Overview', icon: LineChart },
     { path: '/positions', label: 'Positions', icon: TrendingUp },
-    { path: '/performance', label: 'Performance', icon: BarChart2 },
+    { path: '/trading', label: 'Trading', icon: Activity },
     { path: '/strategies', label: 'Strategies', icon: BookOpen },
-    { path: '/backtest', label: 'Backtest', icon: BookOpen },
     { path: '/builder', label: 'Builder', icon: Building },
-    { path: '/monitoring', label: 'Monitoring', icon: Activity },
+    { path: '/backtest', label: 'Backtest', icon: BookOpen },
+    { path: '/performance', label: 'Performance', icon: BarChart2 },
     { path: '/history', label: 'History', icon: History },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle },
     { path: '/settings', label: 'Settings', icon: Settings },
@@ -106,7 +107,7 @@ const App = () => {
           <Route path="performance" element={<Performance />} />
           <Route path="strategies" element={<Strategy />} />
           <Route path="backtest" element={<Backtest />} />
-          <Route path="monitoring" element={<Monitoring />} />
+          <Route path="trading" element={<Trading />} />
           <Route path="history" element={<TradeHistory />} />
           <Route path="alerts" element={<Alerts />} />
           <Route path="settings" element={<Settings />} />

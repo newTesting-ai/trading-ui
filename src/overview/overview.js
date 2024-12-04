@@ -5,37 +5,44 @@ import { Link } from 'react-router-dom';
 import strategies from '../data/strategies'
 import StockChart from '../charts/StockChart';
 import stockData from '../data/stockData'
+import { useSubscription, gql } from '@apollo/client';
+
+const PORTFOLIO_SUBSCRIPTION = gql`
+  subscription {
+    portfolioUpdate {
+      initialCapital
+      capital
+      openPositions
+      orders {
+        symbol {
+            name
+        }
+        type
+        quantity
+        entryPrice
+        currentPrice
+      }
+    }
+  }
+`;
 
 const Overview = () => {
-    const data = {
-        initialCapital: 100000,
-        openPositions: 8,
-        orders: [
-            {
-                symbol: {
-                    name: "AAPL",
-                    img: "",
-                },
-                type: "long",
-                quantitiy: 121,
-                entryPrice: 123.12,
-                currentPrice: 165.21
-            },
-            {
-                symbol: {
-                    name: "MSFT",
-                    img: "",
-                },
-                type: "long",
-                quantitiy: 121,
-                entryPrice: 223.12,
-                currentPrice: 125.1
-            }
-        ]
-    }
-    const openPositions = data.orders.length;
-    let pnl = data.orders.reduce((sum, obj) => sum + (obj.currentPrice - obj.entryPrice) * obj.quantitiy, 0);
-    let pnlPercentage = pnl / data.initialCapital;
+    const [selectedIndicators, setSelectedIndicators] = useState([]);
+    const { data, loading, error } = useSubscription(PORTFOLIO_SUBSCRIPTION, {
+        fetchPolicy: 'no-cache', // Disable caching to avoid data stale issues
+        onData: (subscriptionData) => {
+          console.log('Received Data:', subscriptionData.data);
+        },
+      });
+    console.log(data, loading, error)
+    if (loading || data === undefined) return <p>Loading portfolio...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+    const portfolioData = data.portfolioUpdate;
+    console.log(data, portfolioData)
+    const openPositions = portfolioData.orders.length;
+    let pnl = portfolioData.orders.reduce((sum, obj) => sum + (obj.currentPrice - obj.entryPrice) * obj.quantity, 0);
+    pnl = pnl
+    let pnlPercentage = pnl / portfolioData.initialCapital;
     pnl = Number(pnl.toFixed(5));
     pnlPercentage = Number(pnlPercentage.toFixed(4)) * 100;
     let up;
@@ -44,10 +51,10 @@ const Overview = () => {
     } else {
         up = false;
     }
-    const buyingPower = data.initialCapital - data.orders.reduce((sum, obj) => sum + obj.entryPrice * obj.quantitiy, 0);
-    const [selectedIndicators, setSelectedIndicators] = useState([]);
+    console.log(pnl, pnlPercentage)
+    const buyingPower = portfolioData.initialCapital - portfolioData.orders.reduce((sum, obj) => sum + obj.entryPrice * obj.quantitiy, 0);
 
-
+    
     const handleIndicatorChange = (event) => {
       const { value, checked } = event.target;
        setSelectedIndicators(prevIndicators => {
@@ -74,7 +81,7 @@ const Overview = () => {
                             <Card.Body className="pt-6">
                                 <div>
                                     <p>Portfolio Value</p>
-                                    <p> <b>{data.initialCapital + pnl}</b></p>
+                                    <p> <b>{portfolioData.initialCapital + pnl}</b></p>
                                     <p className={`text-2xl font-bold ${up ? 'text-success' : 'text-danger'}`}> {up ? `+${pnlPercentage}%` : `${pnlPercentage}%`} today</p>
                                 </div>
                             </Card.Body>
@@ -103,7 +110,7 @@ const Overview = () => {
                         <Card.Body className="pt-6">
                             <Card.Title>Active Orders</Card.Title>
                             <div>
-                                {data.orders.splice(-3).map((item, index) => (
+                                {portfolioData.orders.splice(-2).map((item, index) => (
                                     <Card >
                                         <Card.Body>
                                             <p>{item.symbol.name}</p>
