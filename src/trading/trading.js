@@ -19,7 +19,12 @@ const Trading = () => {
   const [tradingStrategies, setTradingStrategies] = useState([]);
   const fetchTradingStrategies = async () => {
     try {
-    const response = await fetch("http://localhost:4000/api/v1/trading/strategies");
+    const response = await fetch("https://singularly-bright-bonefish.ngrok-free.app/api/v1/trading/strategies", {
+      method: "get",
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "69420",
+      }),
+    });
     if (!response.ok) {
         throw new Error("Failed to fetch strategies");
     }
@@ -36,7 +41,12 @@ const Trading = () => {
 
     const fetchStrategies = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/v2/backtesting/strategies");
+        const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies", {
+          method: "get",
+          headers: new Headers({
+            "ngrok-skip-browser-warning": "69420",
+          }),
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch strategies");
         }
@@ -86,7 +96,7 @@ const Trading = () => {
       console.log(stock, strategy);          
       try {
         setSent(true)
-        const response = await fetch(`http://localhost:4000/add_symbol?symbol=${stock}`, {
+        const response = await fetch(`https://singularly-bright-bonefish.ngrok-free.app/add_symbol?symbol=${stock}`, {
           method: 'POST',
         });
         if (!response.ok) {
@@ -105,7 +115,7 @@ const Trading = () => {
     console.log(stock, strategy);          
     try {
       setSent(true)
-      const response = await fetch(`http://localhost:4000/remove_symbol?symbol=${symbol}`, {
+      const response = await fetch(`https://singularly-bright-bonefish.ngrok-free.app/remove_symbol?symbol=${symbol}`, {
         method: 'POST',
       });
       if (!response.ok) {

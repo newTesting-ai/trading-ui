@@ -9,7 +9,7 @@ const httpLink = new HttpLink({
 
 // WebSocket Link for Subscriptions
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql', // Replace with your GraphQL WebSocket endpoint
+  uri: 'wss://singularly-bright-bonefish.ngrok-free.app/graphql', // Replace with your GraphQL WebSocket endpoint
   options: {
     reconnect: true, // Automatically reconnect if the connection drops
   },
