@@ -98,8 +98,7 @@ const IDE = (loadStrategyId) => {
     useEffect(() => {
         const fetchStrategyCode = async () => {
             setLoading(true);
-			console.log(loadStrategyId["code"]["code"])
-            setError(null);
+			setError(null);
             try {
                 const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v1/strategy/get_strategy?user_id=${userId}&strategy_id=${loadStrategyId["code"]["code"]}`, {
 					method: "get",
@@ -121,10 +120,12 @@ const IDE = (loadStrategyId) => {
             }
         };
 
-        if (userId && loadStrategyId) {
+        if (userId && loadStrategyId["code"] != null) {
             fetchStrategyCode();
         } else {
-			setLoading(false);
+			setCode(tempCode['python'])
+			setStrategyName("")
+			setStrategyId("")
 		}
     }, [loadStrategyId]);
 
