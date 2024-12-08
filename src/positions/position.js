@@ -35,7 +35,7 @@ const Position = () => {
     const portfolioData = data.portfolioUpdate;
     const openPositions = portfolioData.orders.length;
     let pnl = portfolioData.orders.reduce((sum, obj) => sum + (obj.currentPrice - obj.entryPrice) * obj.quantity, 0);
-    pnl = pnl + portfolioData.capital - portfolioData.initialCapital;
+    pnl = pnl + portfolioData.capital;
     let pnlPercentage = pnl / portfolioData.initialCapital;
     pnl = Number(pnl.toFixed(5));
     pnlPercentage = Number(pnlPercentage.toFixed(4)) * 100;
