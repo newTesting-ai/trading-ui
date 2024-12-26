@@ -13,10 +13,12 @@ const Strategy = () => {
 
   useEffect(() => {
     const fetchStrategies = async () => {
-      try {
+        const token = localStorage.getItem("authToken"); // Replace "authToken" with the key you use to store the token
+        try {
         const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies", {
           method: "get",
           headers: new Headers({
+              "Authorization": `Bearer ${token}`, // Add the Bearer token from localStorage
             "ngrok-skip-browser-warning": "69420",
           }),
         });

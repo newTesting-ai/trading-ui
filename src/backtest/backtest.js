@@ -18,11 +18,14 @@ const Backtest = () => {
   
     useEffect(() => {
       const fetchStrategies = async () => {
+        const token = localStorage.getItem("authToken"); // Replace "authToken" with the key you use to store the token
         try {
           const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies", {
             method: "get",
             headers: new Headers({
               "ngrok-skip-browser-warning": "69420",
+              "Authorization": `Bearer ${token}`, // Add the Bearer token from localStorage
+  
             }),
           });
           if (!response.ok) {
@@ -81,11 +84,16 @@ const Backtest = () => {
         console.log(stock, strategy, interval);
         try {
             // Make the API request and ignore the result
+            const token = localStorage.getItem("authToken"); // Replace "authToken" with the key you use to store the token
+
             setSent(true)
             await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting?interval=${interval}&trade_id=${stock}&strategy=${strategy}&custom=${custom}`, {
               method: "GET", // Change method if needed
               headers: { "Content-Type": "application/json",
-                "ngrok-skip-browser-warning": "69420"}
+                "ngrok-skip-browser-warning": "69420",
+                "Authorization": `Bearer ${token}`, // Add the Bearer token from localStorage
+
+            }
             });
             console.log("API request sent successfully");
           } catch (error) {
@@ -107,7 +115,7 @@ const Backtest = () => {
                         </button>
                         <ul className={`dropdown-menu ${isCollapsed ? `show` : ``}`}>
                             {stocks.filter((item) => item.instrument_type === "EQ").map((item, index) => (
-                                <li className="dropdown-item" key={index} id={item.instrument_key} onClick={updateStock}>{item.name}</li>
+                                <li className="dropdown-item" key={index} id={item.instrument_token} onClick={updateStock}>{item.name}</li>
                             ))}
                         </ul>
                     </div>

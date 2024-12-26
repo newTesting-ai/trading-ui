@@ -54,6 +54,16 @@ const Overview = () => {
     console.log(pnl, pnlPercentage)
     const buyingPower = portfolioData.initialCapital - portfolioData.orders.reduce((sum, obj) => sum + obj.entryPrice * obj.quantitiy, 0);
 
+    // Calculate Portfolio Value
+    const calculatePortfolioValue = (data) => {
+        const { capital, orders } = data;
+        const positionsValue = orders.reduce(
+            (total, order) => total + order.currentPrice * order.quantity,
+            0
+        );
+        return capital + positionsValue;
+    };
+    const portfolioValue = calculatePortfolioValue(portfolioData).toFixed(2);
     
     const handleIndicatorChange = (event) => {
       const { value, checked } = event.target;
@@ -81,7 +91,7 @@ const Overview = () => {
                             <Card.Body className="pt-6">
                                 <div>
                                     <p>Portfolio Value</p>
-                                    <p> <b>{portfolioData.initialCapital + pnl}</b></p>
+                                    <p> <b>{portfolioValue}</b></p>
                                     <p className={`text-2xl font-bold ${up ? 'text-success' : 'text-danger'}`}> {up ? `+${pnlPercentage}%` : `${pnlPercentage}%`} today</p>
                                 </div>
                             </Card.Body>

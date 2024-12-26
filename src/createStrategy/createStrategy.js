@@ -24,23 +24,40 @@ const StrategyBuilder = () => {
   useEffect(() => {
     const fetchStrategies = async () => {
       try {
+        // Retrieve the auth token from localStorage
+        const authToken = localStorage.getItem('authToken');
+    
         const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies?custom=True", {
-          method: "get",
+          method: "GET",
           headers: new Headers({
             "ngrok-skip-browser-warning": "69420",
+            // Add Authorization header with Bearer token
+            "Authorization": `Bearer ${authToken}`,
+            // Optional: specify content type
+            "Content-Type": "application/json"
           }),
         });
+    
         if (!response.ok) {
+          // Handle unauthorized or token expiration
+          if (response.status === 401) {
+            // Redirect to login or refresh token
+            localStorage.removeItem('authToken');
+            window.location.href = '/login';
+            return;
+          }
           throw new Error("Failed to fetch strategies");
         }
+    
         const data = await response.json();
-        setStrategies(data || []); // Assuming the API returns an object with a "strategies" array
+        setStrategies(data || []); 
       } catch (err) {
-        console.log(err.message)
+        console.log(err.message);
+        // Optionally handle different error scenarios
         // setError(err.message);
       }
     };
-
+    
     fetchStrategies();
   }, []);
 

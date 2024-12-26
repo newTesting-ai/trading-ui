@@ -4,12 +4,12 @@ import { getMainDefinition } from '@apollo/client/utilities';
 
 // HTTP Link for Queries and Mutations
 const httpLink = new HttpLink({
-  uri: 'http://localhost:5000/graphql', // Replace with your GraphQL HTTP endpoint
+  uri: 'https://singularly-bright-bonefish.ngrok-free.app/graphql', // Replace with your GraphQL HTTP endpoint
 });
 
 // WebSocket Link for Subscriptions
 const wsLink = new WebSocketLink({
-  uri: 'wss://singularly-bright-bonefish.ngrok-free.app/graphql', // Replace with your GraphQL WebSocket endpoint
+  uri: 'ws://localhost:5000/graphql', // Replace with your GraphQL WebSocket endpoint
   options: {
     reconnect: true, // Automatically reconnect if the connection drops
   },

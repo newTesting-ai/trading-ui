@@ -27,10 +27,12 @@ const TradingDashboard = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
-      try {
+        const token = localStorage.getItem("authToken"); // Replace "authToken" with the key you use to store the token
+        try {
         const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/results?interval=${interval}&trade_id=${stock}&strategy=${code}`, {
           method: "get",
           headers: new Headers({
+              "Authorization": `Bearer ${token}`, // Add the Bearer token from localStorage
             "ngrok-skip-browser-warning": "69420",
           }),
         });
@@ -162,7 +164,7 @@ const TradingDashboard = () => {
                 </button>
                 <ul className={`dropdown-menu ${isStockCollapsed ? `show` : ``}`}>
                     {stocks.filter((item) => item.instrument_type === "EQ").map((item, index) => (
-                        <li className="dropdown-item" key={index} id={item.instrument_key} onClick={updateStock}>{item.name}</li>
+                        <li className="dropdown-item" key={index} id={item.instrument_token} onClick={updateStock}>{item.name}</li>
                     ))}
                 </ul>
             </div>

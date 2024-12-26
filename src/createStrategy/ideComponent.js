@@ -100,10 +100,12 @@ const IDE = (loadStrategyId) => {
             setLoading(true);
 			setError(null);
             try {
-                const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v1/strategy/get_strategy?user_id=${userId}&strategy_id=${loadStrategyId["code"]["code"]}`, {
+				const token = localStorage.getItem('authToken');
+				const response = await fetch(`https://sheep-gorgeous-absolutely.ngrok-free.app/api/v1/strategy/get_strategy?strategy_id=${loadStrategyId["code"]["code"]}`, {
 					method: "get",
 					headers: new Headers({
-					  "ngrok-skip-browser-warning": "69420",
+						"Authorization": `Bearer ${token}`, // Add the Bearer token from localStorage
+						"ngrok-skip-browser-warning": "69420",
 					}),
 				  });
                 if (!response.ok) {
@@ -147,11 +149,13 @@ const IDE = (loadStrategyId) => {
 			strategy_code: code,
 			user_id: "abcfsa232"
 		}
+		const token = localStorage.getItem('authToken');
 		var options = {
 			method: 'POST',
 			headers: {
 				'Content-type': 'application/json',
 				Accept: 'application/json',
+				"Authorization": `Bearer ${token}`, // Add the Bearer token from localStorage
 				"ngrok-skip-browser-warning": "69420",
 			},
 			body: JSON.stringify(data)

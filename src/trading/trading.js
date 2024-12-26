@@ -12,17 +12,22 @@ const Trading = () => {
   const [loading, setLoading] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isStrategyCollapsed, setIsStrategy] = useState(false);
-  const [stock, setStock] = useState("NSE_EQ|INE758T01015");
+  const [stock, setStock] = useState("139046660");
+  const [symbol, setSymbol] = useState("INFY");
   const [strategy, setStrategy] = useState(null);
   const [error, setError] = useState(null);
   const [sent, setSent] = useState(false);
   const [tradingStrategies, setTradingStrategies] = useState([]);
   const fetchTradingStrategies = async () => {
+    const token = localStorage.getItem("authToken"); // Replace "authToken" with the key you use to store the token
+
     try {
     const response = await fetch("https://singularly-bright-bonefish.ngrok-free.app/api/v1/trading/strategies", {
       method: "get",
       headers: new Headers({
         "ngrok-skip-browser-warning": "69420",
+        "Authorization": `Bearer ${token}`, // Add the Bearer token from localStorage
+  
       }),
     });
     if (!response.ok) {
@@ -41,10 +46,13 @@ const Trading = () => {
 
     const fetchStrategies = async () => {
       try {
+        const token = localStorage.getItem("authToken"); // Replace "authToken" with the key you use to store the token
+
         const response = await fetch("https://sheep-gorgeous-absolutely.ngrok-free.app/api/v2/backtesting/strategies", {
           method: "get",
           headers: new Headers({
             "ngrok-skip-browser-warning": "69420",
+            "Authorization": `Bearer ${token}`, // Add the Bearer token from localStorage
           }),
         });
         if (!response.ok) {
@@ -82,7 +90,8 @@ const Trading = () => {
       setIsStrategy(!isStrategyCollapsed);
   }
   const updateStock = (e) => {
-      setStock(e.target.id);
+      setStock(e.instrument_token);
+      setSymbol(e.name)
       toggleDropdown()
   }
 
@@ -96,7 +105,7 @@ const Trading = () => {
       console.log(stock, strategy);          
       try {
         setSent(true)
-        const response = await fetch(`https://singularly-bright-bonefish.ngrok-free.app/add_symbol?symbol=${stock}`, {
+        const response = await fetch(`https://singularly-bright-bonefish.ngrok-free.app/add_symbol?symbol=${symbol}&token=${stock}`, {
           method: 'POST',
         });
         if (!response.ok) {
@@ -144,7 +153,7 @@ const Trading = () => {
                       </button>
                       <ul className={`dropdown-menu ${isCollapsed ? `show` : ``}`}>
                           {stocks.filter((item) => item.instrument_type === "EQ").map((item, index) => (
-                              <li className="dropdown-item" key={index} id={item.instrument_key} onClick={updateStock}>{item.name}</li>
+                              <li className="dropdown-item" key={index} id={item.instrument_token}  onClick={(e) => updateStock(item)} >{item.name}</li>
                           ))}
                       </ul>
                   </div>
