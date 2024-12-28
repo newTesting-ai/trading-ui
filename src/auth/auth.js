@@ -65,6 +65,11 @@ const AuthPage = () => {
         return;
       }
 
+      if(isLogin === false) {
+        setIsLogin(true)
+        return;
+      }
+
       // Successfully authenticated
       if (data.access_token) {
         // Store JWT token
