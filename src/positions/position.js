@@ -1,47 +1,82 @@
 import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
+import { useSubscription, gql } from '@apollo/client';
+
+const PORTFOLIO_SUBSCRIPTION = gql`
+  subscription {
+    portfolioUpdate {
+      initialCapital
+      capital
+      openPositions
+      orders {
+        symbol {
+            name
+        }
+        type
+        quantity
+        entryPrice
+        currentPrice
+      }
+    }
+  }
+`;
 
 const Position = () => {
-    const data = {
-        initialCapital: 100000,
-        openPositions: 8,
-        orders: [
-            {
-                symbol: {
-                    name: "AAPL",
-                    img: "",
-                },
-                type: "long",
-                quantitiy: 121,
-                entryPrice: 123.12,
-                currentPrice: 165.21
-            },
-            {
-                symbol: {
-                    name: "MSFT",
-                    img: "",
-                },
-                type: "long",
-                quantitiy: 121,
-                entryPrice: 223.12,
-                currentPrice: 125.1
-            }
-        ]
-    }
-    const openPositions = data.orders.length;
-    let pnl = data.orders.reduce((sum, obj) => sum + (obj.currentPrice - obj.entryPrice) * obj.quantitiy, 0);
-    let pnlPercentage = pnl / data.initialCapital;
+    const [selectedIndicators, setSelectedIndicators] = useState([]);
+    const { data, loading, error } = useSubscription(PORTFOLIO_SUBSCRIPTION, {
+        fetchPolicy: 'no-cache', // Disable caching to avoid data stale issues
+        onData: (subscriptionData) => {
+          console.log('Received Data:', subscriptionData.data);
+        },
+      });
+    console.log(data, loading, error)
+    if (loading || data === undefined) return <p>Loading portfolio...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+    const portfolioData = data.portfolioUpdate;
+    const openPositions = portfolioData.orders.length;
+    let pnl = portfolioData.orders.reduce((sum, obj) => sum + (obj.currentPrice - obj.entryPrice) * obj.quantity, 0);
+    let pnlPercentage = pnl / portfolioData.initialCapital;
     pnl = Number(pnl.toFixed(5));
     pnlPercentage = Number(pnlPercentage.toFixed(4)) * 100;
+    
+    // Calculate Portfolio Value
+    const calculatePortfolioValue = (data) => {
+        const { capital, orders } = data;
+        const positionsValue = orders.reduce(
+            (total, order) => total + order.currentPrice * order.quantity,
+            0
+        );
+        return capital + positionsValue;
+    };
+    
+    // Calculate Today's PnL
+    const calculateTodaysPnL = (data) => {
+        const { orders } = data;
+        return orders.reduce(
+            (total, order) =>
+                total + (order.currentPrice - order.entryPrice) * order.quantity,
+            0
+        );
+    };
+    
+    // Buying Power
+    const calculateBuyingPower = (data) => {
+        return data.capital;
+    };
+    
+    // Perform calculations
+    const portfolioValue = calculatePortfolioValue(portfolioData).toFixed(2);
+    const todaysPnL = calculateTodaysPnL(portfolioData).toFixed(2);
+    const buyingPower = calculateBuyingPower(portfolioData).toFixed(2);
     let up;
-    if (pnl > 0) {
+    if (todaysPnL >= 0) {
         up = true;
     } else {
         up = false;
     }
-    const buyingPower = data.initialCapital - data.orders.reduce((sum, obj) => sum + obj.entryPrice * obj.quantitiy, 0);
+    
     return (
-
+        
         <div className="p-4 space-y-4">
             <div className="d-flex justify-content-center p-2">
                 <h1>Trading Position</h1>
@@ -53,7 +88,7 @@ const Position = () => {
                         <div>
                             <div>
                                 <p>Portfolio Value</p>
-                                <p> {data.initialCapital + pnl}</p>
+                                <p> {portfolioValue}</p>
                             </div>
                         </div>
                     </Card.Body>
@@ -63,7 +98,7 @@ const Position = () => {
                         <div>
                             <div>
                                 <p>Today's Pnl</p>
-                                <p className={`text-2xl font-bold ${up ? 'text-success' : 'text-danger'}`}> {up ? `+${pnl} (+${pnlPercentage}%)` : `${pnl} (${pnlPercentage}%)`}</p>
+                                <p className={`text-2xl font-bold ${up ? 'text-success' : 'text-danger'}`}> {up ? `+${todaysPnL} (+${pnlPercentage}%)` : `${todaysPnL} (${pnlPercentage}%)`}</p>
                             </div>
                         </div>
                     </Card.Body>
@@ -108,15 +143,15 @@ const Position = () => {
                                 </tr>
                             </thead>
                             <tbody className='table-group-divider'>
-                                {data.orders.map((order) => (
+                                {portfolioData.orders.map((order) => (
                                     <tr key={order.order_id} className="border-b">
                                         <td className="p-2">{order.symbol.name}</td>
                                         <td className="p-2">{order.type}</td>
                                         <td className="p-2">{order.quantity}</td>
-                                        <td className="p-2">${order.entryPrice.toFixed(2)}</td>
-                                        <td className="p-2">${order.currentPrice.toFixed(2)}</td>
-                                        <td className="p-2">${(order.currentPrice*order.quantitiy).toFixed(2)}</td>
-                                        <td className={`p-2 ${(order.currentPrice-order.entryPrice) > 0 ? 'text-success' : 'text-danger'}`}>${((order.currentPrice-order.entryPrice)*order.quantitiy).toFixed(2)}</td>
+                                        <td className="p-2">Rs {order.entryPrice.toFixed(2)}</td>
+                                        <td className="p-2">Rs {order.currentPrice.toFixed(2)}</td>
+                                        <td className="p-2">Rs {(order.currentPrice*order.quantity).toFixed(2)}</td>
+                                        <td className={`p-2 ${(order.currentPrice-order.entryPrice) > 0 ? 'text-success' : 'text-danger'}`}>Rs {((order.currentPrice-order.entryPrice)*order.quantity).toFixed(2)}</td>
                                         <td className={`p-2 ${(order.currentPrice-order.entryPrice) > 0 ? 'text-success' : 'text-danger'}`}>
                                             {((order.currentPrice-order.entryPrice)*100/order.entryPrice).toFixed(2)}
                                         </td>
